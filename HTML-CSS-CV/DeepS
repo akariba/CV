@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #chat-container {
+            width: 350px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        #chat-window {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ddd;
+        }
+        .message {
+            margin-bottom: 15px;
+        }
+        .message strong {
+            color: #333;
+        }
+        .message.user {
+            text-align: right;
+        }
+        .message.bot {
+            text-align: left;
+        }
+        #user-input-container {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+        #user-input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            outline: none;
+        }
+        #send-button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-window">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div id="user-input-container">
+            <input type="text" id="user-input" placeholder="Type your question here...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const chatWindow = document.getElementById('chat-window');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+
+        function addMessage(sender, message) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender);
+            messageElement.innerHTML = `<strong>${sender === 'user' ? 'You' : 'DeepSeek'}:</strong> ${message}`;
+            chatWindow.appendChild(messageElement);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        sendButton.addEventListener('click', function() {
+            const question = userInput.value.trim();
+            if (question) {
+                addMessage('user', question);
+                userInput.value = '';
+
+                // Replace with your API call to DeepSeek
+                fetch('https://api.deepseek.com/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question: question }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    addMessage('bot', data.answer);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    addMessage('bot', 'Sorry, there was an error processing your request.');
+                });
+            }
+        });
+
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendButton.click();
+            }
+        });
+    </script>
+</body>
+</html>
