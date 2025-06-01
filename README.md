@@ -182,6 +182,10 @@ case rating1 of
    └────────────────────────┘
 
 
+→ if curveType == "GN" then use ZSPD
+→ if curveType == "SN" then use CRSPD
+
+"SR_GEN_CORP_XXX_USD_SN" ++ rating
 
 
 
