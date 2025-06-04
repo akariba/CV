@@ -187,6 +187,9 @@ case rating1 of
 
 "SR_GEN_CORP_XXX_USD_SN" ++ rating
 
-
+=IFERROR(
+  INDEX(issuer_details!H:H, MATCH(Sheet20!L2, issuer_info_map!E:E, 0)),
+  INDEX(issuer_details!H:H, MATCH(Sheet20!I2, issuer_details!F:F, 0))
+)
 
 
