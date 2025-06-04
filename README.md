@@ -355,3 +355,9 @@ Sample data delivery within the next 24 hours is a key dependency for downstream
 The go-live timeline of 30 September 2025 remains feasible but depends on early July ticket creation and mid-August UAT completion.
 
 GMV validation will determine whether model sign-off for equity XVA VAR requires formal re-approval.
+
+=IF(
+  MID(R2,FIND("CDS_",R2)+4,2) = MID(S2,FIND("CDS_",S2)+4,2),
+  "OK",
+  "Mismatch: System 1 = " & MID(R2,FIND("CDS_",R2)+4,2) & "; System 2 = " & MID(S2,FIND("CDS_",S2)+4,2)
+)
